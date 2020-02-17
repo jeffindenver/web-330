@@ -1,0 +1,12 @@
+table {
+	border: 1px solid AliceBlue;
+}
+th {
+    color: white;
+    background-color: steelblue;
+    text-align: left;
+}
+th, tr, td {
+    padding: 5px 5px;
+}
+tr:nth-child(odd) {background-color: lightsteelblue;}
