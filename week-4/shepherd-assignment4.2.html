@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <title>Assignment name</title>
+
+  <!-- jQuery reference -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <button id="theButton" type="button">Click me</button>
+
+  <script>
+    $(function () {
+      $("#theButton").click(function () {
+        $.get("https://dog.ceo/api/breeds/image/random", function(data, status) {
+          console.log(`Data: ${JSON.stringify(data)} \nStatus: ${status}`);
+        });
+      });
+    });
+
+  </script>
+</body>
+
+</html>
