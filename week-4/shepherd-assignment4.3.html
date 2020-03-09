@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <title>Assignment name</title>
+
+  <!-- jQuery reference -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <button id="deleteButton" type="button">Delete Something</button>
+  <script>
+    $(function () {
+      $("#deleteButton").click(() => {
+        $.ajax({
+          url: "http://httpbin.org/delete",
+          type: "DELETE",
+          data: {
+            firstName: "Joe",
+            lastName: "Smith",
+            age: "31"
+          },
+          success: (data, status) => {
+            console.log(
+              "Name: " + data.form.firstName + " " + data.form.lastName + "\n" +
+              "Age: " + data.form.age + "\n" +
+              "Status: " + status);
+          }
+        });
+      });
+    });
+
+  </script>
+</body>
+
+</html>
