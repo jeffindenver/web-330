@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 5.2</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="bg-info text-center">Proxy Example 1</h2>
+    <button class="btn" id="btnExample1">Run test</button>
+    <br><span id="proxyExampleOne"></span>
+
+    <h2 class="bg-info text-center">Proxy Example 2</h2>
+      <button class="btn" id="btnExample2Left">Run left test</button>
+      <button class="btn" id="btnExample2Right">Run right test</button>
+    <br><span id="proxyExampleTwo"></span>
+  </div>
+
+  <script>
+    $(function () {
+      //Example 1
+      let car = {
+        make: "Tesla",
+        model: "S",
+        display: function () {
+          $("#proxyExampleOne").html(
+            "<br>" +
+            "Make: " + this.make +
+            "<br>" +
+            "Model: " + this.model);
+        }
+      };
+
+      $("#btnExample1").click($.proxy(car, "display"));
+
+      //Example 2
+      let joe = {
+        name: "Joe"
+      };
+      let sally = {
+        name: "Sally"
+      };
+
+      let writer = function () {
+        $("#proxyExampleTwo").html("<br>Name: " + this.name);
+      };
+
+      $("#btnExample2Left").on("click", $.proxy(writer, joe));
+      $("#btnExample2Right").on("click", $.proxy(writer, sally));
+    });
+
+  </script>
+</body>
+
+</html>
