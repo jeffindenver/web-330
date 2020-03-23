@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 6.2</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type='text/javascript' src='../knockout-3.5.1.js'></script>
+  <style></style>
+</head>
+
+
+<body>
+  <div role="main" class="container">
+    <h2>Knockout ViewModel Example</h2>
+
+    <div class="form-group">
+      <label for="txtFirstName">Make:</label>
+      <input type="text" class="form-control alert-warning" data-bind="value: firstName" id="txtFirstName">
+    </div>
+
+    <div class="form-group">
+      <label for="txtLastName">Model:</label>
+      <input type="text" class="form-control alert-warning" data-bind="value: lastName" id="txtLastName">
+    </div>
+
+    <div class="form-group">
+      <label for="txtEmail">Email:</label>
+      <input type="text" class="form-control alert-warning" data-bind="value: email" id="txtEmail">
+    </div>
+
+  </div>
+
+
+
+  <script>
+    function PersonViewModel() {
+      this.firstName = ko.observable("Jeff")
+      this.lastName = ko.observable("Shepherd");
+      this.email = ko.observable("jeff@email.com");
+    }
+    ko.applyBindings(new PersonViewModel());
+  </script>
+</body>
+
+</html>
