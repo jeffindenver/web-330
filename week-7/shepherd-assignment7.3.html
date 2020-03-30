@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 7.2</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type='text/javascript' src='../knockout-3.5.1.js'></script>
+  <style></style>
+</head>
+
+
+<body>
+  <div role="main" class="container">
+    <h2>Knockout for each binding</h2>
+
+    <table class="table table-dark table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: textbooks">
+        <tr>
+          <td data-bind="text: name"></td>
+          <td data-bind="text: price"></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+
+  <script>
+    function TextbookViewModel() {
+      this.textbooks = ko.observableArray([{
+          name: "JavaScript The definitive guide",
+          price: 34.99
+        },
+        {
+          name: "Head First: Javascript Programming",
+          price: 29.99
+        },
+        {
+          name: "Express in Action",
+          price: 34.99
+        },
+        {
+          name: "Learning JavaScript Design Patterns",
+          price: 24.99
+        }
+      ]);
+    }
+
+    ko.applyBindings(new TextbookViewModel());
+
+  </script>
+</body>
+
+</html>
