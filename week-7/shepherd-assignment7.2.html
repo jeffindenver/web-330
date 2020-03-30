@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 7.2</title>
+  <meta charset="utf-8" />
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type='text/javascript' src='../knockout-3.5.1.js'></script>
+  <style></style>
+</head>
+
+
+<body>
+  <div role="main" class="container">
+    <h2>Knockout IF binding</h2>
+
+    <div class="form-group">
+      <label for="txtFirstName">First Name:</label>
+      <input type="text" class="form-control" data-bind="value: firstName" id="txtFirstName">
+    </div>
+
+    <div class="form-group" data-bind="if: firstName">
+      <label for="txtLastName">Last Name:</label>
+      <input type="text" class="form-control" data-bind="value: lastName" id="txtLastName">
+    </div>
+
+    <div class="form-group" data-bind="if: lastName">
+      <label for="txtFullName">Full Name:</label>
+      <input type="text" class="form-control" data-bind="value: fullName" id="txtFullName">
+    </div>
+
+  </div>
+
+
+
+  <script>
+    function PersonViewModel() {
+      let self = this;
+      this.firstName = ko.observable("")
+      this.lastName = ko.observable("");
+      this.fullName = ko.computed(function () {
+        return self.firstName() + " " + self.lastName();
+      });
+    }
+      ko.applyBindings(new PersonViewModel());
+
+  </script>
+</body>
+
+</html>
