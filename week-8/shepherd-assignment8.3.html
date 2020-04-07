@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 8.3</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src='../knockout-3.5.1.js'></script>
+  <style>
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact Us</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div role="main" class="container">
+    <br><br>
+
+    <div class="row" data-bind="if: error">
+      <div class="col-sm-12">
+        <div class="alert alert-danger" role="alert">
+          <strong>Warning!</strong> <span data-bind="text: error()"></span>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <h2>UD Example</h2>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+          <div class="card-block p-3">
+            <h3 class="card-title">Employee List</h3>
+            <div class="card-text">
+              <table class="table table-dark table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Functions</th>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: employeeList">
+                  <tr>
+                    <td data-bind="text: id"></td>
+                    <td data-bind="text: name"></td>
+                    <td>
+                      <span>
+                        <a href="#" class="btn btn-success" data-bind="click: $root.edit">
+                          <i class="fa fa-pencil fa-lg"> </i> EDIT
+                        </a>
+                      </span>
+                      |
+                      <span>
+                        <a href="#" class="btn btn-danger" data-bind="click: $root.remove">
+                          <i class="fa fa-trash-o fa-lg"> </i> DELETE
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4" data-bind="if: employee">
+        <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+          <div class="card-block p-3">
+            <h3 class="card-title">Employee List Item</h3>
+            <div class="card-text">
+              <div class="form-group">
+                <label for="txtName">Name: </label>
+                <input type="text" id="txtName" data-bind="value: employee().name" class="form-control" />
+              </div>
+
+              <div class="form-group float-right">
+                <button data-bind="click: $root.cancel" class="btn btn-group btn-danger">
+                  Cancel
+                </button>
+                <button data-bind="click: $root.update" class="btn btn-group btn-success">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+  </div>
+
+
+
+
+  <script>
+    function Employee(id, name) {
+      this.id = id;
+      this.name = name;
+    }
+
+    let employeeList = [
+      new Employee(1, "Jack"),
+      new Employee(2, "Jill"),
+      new Employee(3, "Alfred"),
+      new Employee(4, "Alice"),
+      new Employee(5, "Bob")
+    ];
+
+    function EmployeeViewModel() {
+      //variable self is used to give context to callbacks
+      let self = this;
+
+      this.error = ko.observable("");
+      this.id = ko.observable("");
+      this.name = ko.observable("");
+
+      let employee = {
+        id: this.id,
+        name: this.name
+      };
+
+      this.employee = ko.observable();
+      this.employeeList = ko.observableArray(employeeList);
+
+      this.edit = function (employee) {
+        self.employee(employee);
+      };
+
+      this.remove = function (employee) {
+        self.employeeList.remove(employee);
+      };
+
+      this.cancel = function () {
+        self.employee(undefined);
+      };
+
+      this.update = function () {
+        let l_employee = self.employee();
+        self.employeeList.remove(self.employee());
+        self.employeeList.push(l_employee);
+      }
+    }
+    ko.applyBindings(new EmployeeViewModel());
+
+  </script>
+</body>
+
+</html>
