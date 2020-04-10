@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 8.4</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  <script src='../knockout-3.5.1.js'></script>
+</head>
+
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact Us</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div role="main" class="container">
+    <br><br>
+
+    <div class="row" data-bind="if: error">
+      <div class="col-sm-12">
+        <div class="alert alert-danger" role="alert">
+          <strong>Warning!</strong> <span data-bind="text: error()"></span>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h2>CRUD Operations</h2>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+          <div class="card-block p-3">
+            <h3 class="card-title">Employee List</h3>
+            <div class="card-text">
+              <table class="table table-dark table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Functions</th>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: Employees">
+                  <tr>
+                    <td data-bind="text: id"></td>
+                    <td data-bind="text: name"></td>
+                    <td>
+                      <span>
+                        <a href="#" class="btn btn-success" data-bind="click: $root.edit">
+                          <i class="fa fa-pencil fa-lg"> </i> EDIT
+                        </a>
+                      </span>
+                      |
+                      <span>
+                        <a href="#" class="btn btn-danger" data-bind="click: $root.remove">
+                          <i class="fa fa-trash-o fa-lg"> </i> DELETE
+                        </a>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4" data-bind="if: editViewable">
+        <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+          <div class="card-block p-3">
+            <h3 class="card-title">Update Item</h3>
+            <div class="card-text">
+              <div class="form-group">
+                <label for="txtName">Name: </label>
+                <input type="text" id="txtName" data-bind="value: Employee().name" class="form-control" />
+              </div>
+
+              <div class="form-group float-right">
+                <button data-bind="click: $root.cancel" class="btn btn-group btn-danger">
+                  Cancel
+                </button>
+                <button data-bind="click: $root.update" class="btn btn-group btn-success">
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card card-inverse" style="background-color: #333; border-color: #333; color: white;">
+          <div class="card-block p-3">
+            <h3 class="card-title">Add an employee</h3>
+            <div class="card-text">
+              <div class="form-group row">
+                <label for="txtEmployee" class="col-4 col-form-label">Employee:
+                </label>
+                <div class="col-6">
+                  <input type="text" data-bind="value: Employee().name, valueUpdate: 'afterkeydown'"
+                    class="form-control" id="txtEmployee"1>
+                </div>
+                <div class="col-2">
+                  <button data-bind="click: add" class="btn btn-primary">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+  </div>
+
+
+
+
+  <script>
+    function PayrollModel() {
+      function Employee(id, name) {
+        this.id = id;
+        this.name = name;
+      }
+
+      this.createEmployee = function (id, name) {
+        return new Employee(id, name);
+      }
+
+      this.getData = function () {
+        return [
+          new Employee(1, "Jack"),
+          new Employee(2, "Jill"),
+          new Employee(3, "Alfred"),
+          new Employee(4, "Alice"),
+          new Employee(5, "Bob")
+        ];
+      }
+    }
+
+
+    function PayrollViewModel(model) {
+      let self = this;
+      let employeeCounter = 0; //used to get employee ID
+
+      this.error = ko.observable("");
+      this.id = ko.observable("");
+      this.name = ko.observable("");
+      this.editViewable = ko.observable(false);
+
+      let Employee = {
+        id: this.id,
+        name: this.name
+      };
+
+      this.Employee = ko.observable(Employee);
+      this.Employees = ko.observableArray(model.getData());
+      employeeCounter += this.Employees().length;
+
+      this.add = function () {
+        if ((self.Employee().name() !== "") && (!isDuplicate(self.Employee().name()))) {
+          let id = employeeCounter + 1;
+          let name = self.Employee().name();
+          let employee = model.createEmployee(id, name);
+
+          self.Employees.push(employee);
+          employeeCounter++;
+          self.error("");
+        } else {
+          self.error("Duplicate or invalid entry.");
+        }
+        initEmployee();
+      };
+
+      function isDuplicate(name) {
+        let isDupe = false;
+        self.Employees().forEach(item => {
+          if (item.name === name) {
+            isDupe = true;
+          }
+        });
+        return isDupe;
+      }
+
+      this.edit = function (Employee) {
+        self.editViewable(true);
+        self.Employee(Employee);
+        console.log("Selected employee is " + self.Employee().name);
+      };
+
+      this.remove = function (Employee) {
+        self.Employees.remove(Employee);
+      };
+
+      this.cancel = function () {
+        self.editViewable(false);
+        initEmployee();
+        console.log("Selected employee is " + (self.Employee().name() ? self.Employee().name() : "none"));
+      };
+
+      this.update = function () {
+        let l_employee = self.Employee();
+        let newEmployee = model.createEmployee(l_employee.id, l_employee.name);
+        self.Employees.replace(self.Employee(), newEmployee);
+
+        initEmployee();
+        console.log(self.Employees());
+      };
+
+      function initEmployee() {
+        self.Employee = ko.observable(Employee);
+      }
+
+    }
+
+    ko.applyBindings(new PayrollViewModel(new PayrollModel()));
+
+  </script>
+</body>
+
+</html>
