@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <title>Shepherd assignment 9.2</title>
+  <meta charset="utf-8">
+  <meta name="author" content="Professor Krasso, Jeff Shepherd">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"
+    integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact Us</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div role="main" class="container">
+    <br><br>
+
+    <h2>Hello MVC Example</h2>
+    <p class="lead">Models and Collections...</p>
+    <div class="row">
+      <div class="col-sm-9">
+        <table class="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function Employee(id, name, salary) {
+      this.id = id;
+      this.name = name;
+      this.salary = salary;
+    }
+
+    let EmployeeModel = Backbone.Model.extend({
+      defaults: {
+        id: "",
+        name: "",
+        salary: 0
+      }
+    });
+
+    let EmployeeCollection = Backbone.Collection.extend({
+      model: EmployeeModel
+    });
+
+    let Employees = new EmployeeCollection();
+    Employees.add(new Employee("100", "Kit Harrington", 2.4));
+    Employees.add(new Employee("101", "Peter Dinklage", 2.6));
+    Employees.add(new Employee("102", "Gwendoline Christie", 3.0));
+    Employees.add(new Employee("103", "Sophie Turner", 2.5));
+
+    Employees.each(function (item) {
+      $("#table-body").append(
+        `<tr>
+          <td>
+            ${item.get("id")}
+          </td>
+          <td>
+            ${item.get("name")}
+          </td>
+          <td>
+            $${item.get("salary")} million
+          </td>
+        </tr>`
+      );
+    });
+
+  </script>
+</body>
+
+</html>
